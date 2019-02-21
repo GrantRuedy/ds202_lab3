@@ -103,8 +103,11 @@ ggplot(HAPPY, aes(x=HEALTH, y=AGE, col=SEX, size=AGE )) + geom_boxplot(na.rm=TRU
 This graph shows a boxplot comparing the health and age of the person. Each health level is seperated by gender. By looking at the graph, poor health people are the oldest. Fair health pople are the second oldest and this trend continues, for the youngest peope around age 38 have excellent health. This is intuitive that young people are healthier and oldder people tend to be less healthy.
 
 
+```{r}
+ggplot(HAPPY, aes(x = FINRELA, fill = SEX)) + geom_bar(position = 'dodge')
+```
 
-
+This barplot shows the number of males and females at each financial level.  It shows more males with above average and far above average incomes.  This shows that males get paid more than females on average.
 
 
 
@@ -139,8 +142,11 @@ ggplot(HAPPY, aes(x=HAPPY, fill=DEGREE)) + geom_bar(position='fill') + ylab('pro
 The final graph shows happiness level compared to level of degree, by using a proportion. According to the graph, people are not too happy have the highest proportion of people who only completed lt high school as their highest level of education. There does seem to be a small trend in happiness depending on graduate degree, as the most happy people have a higher proprtion of peole with graduate degrees than the other people.
 
 
-  
-
+```{r}
+ggplot(HAPPY, aes(x = HEALTH, fill = HAPPY)) + geom_bar(position = 'fill')
+```
+ 
+In this graph it shows the proportion of each happiness level according to each happiness level.  We can conclude from this graph that happiness and health have a positive relationship.  The "Not Too Happy" proportion gets smaller as the excellent health goes toward excellent.
 
 
 
