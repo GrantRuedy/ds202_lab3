@@ -1,0 +1,89 @@
+---
+title: "Individual 2 Lab 3"
+author: "Andrew Sundberg"
+date: "February 19, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+data(happy, package="productplots")
+head(happy)
+setwd("C:/Users/Andrew Sundberg/Documents/DS202/ds202_lab3")
+HAPPY <- readRDS("HAPPY.rds")
+head(HAPPY)
+library(ggplot2)
+```
+
+1.
+```{r}
+HAPPY[HAPPY == 'IAP' | HAPPY == 'DK'] = NA
+```
+
+2. & 3.
+```{r}
+HAPPY1 = as.character(HAPPY$HAPPY)
+HAPPY$HAPPY <-factor(HAPPY1)
+
+SEX1 = as.character(HAPPY$SEX)
+SEX2 = factor(SEX1)
+HAPPY$SEX = SEX2
+
+MARITAL1 = as.character(HAPPY$MARITAL)
+MARITAL2 = factor(MARITAL1, c('NEVER MARRIED', 'MARRIED', 'SEPARATED', 'DIVORCED', 'WIDOWED'))
+HAPPY$MARITAL <- MARITAL2
+
+DEGREE1 = as.character(HAPPY$DEGREE)
+DEGREE2 = factor(DEGREE1, c('LT HIGH SCHOOL', 'HIGH SCHOOL', 'JUNIOR COLLEGE', 'BACHELOR', 'GRADUATE'))
+HAPPY$DEGREE = DEGREE2
+
+FINRELA1 = as.character(HAPPY$FINRELA)
+FINRELA2 = factor(FINRELA1, c('FAR BELOW AVERAGE', 'BELOW AVERAGE', 'AVERAGE', 'ABOVE AVERAGE', 'FAR ABOVE AVERAGE'))
+HAPPY$FINRELA = FINRELA2
+
+HEALTH1 = as.character(HAPPY$HEALTH)
+HEALTH2 = factor(HEALTH1, c('POOR', 'FAIR', 'GOOD', 'EXCELLENT'))
+HAPPY$HEALTH = HEALTH2
+
+PARTY1 = as.character(HAPPY$PARTYID)
+PARTY2 = factor(PARTY1, c('STRONG DEMOCRAT', 'NOT STR DEMOCRAT', 'IND,NEAR DEM', 'INDEPENDENT', 'IND,NEAR REP', 'NOT STR REPUBLICAN', 'STRONG REPUBLICAN', 'OTHER PARTY'))
+HAPPY$PARTYID = PARTY2
+
+HAPPY[HAPPY =='89 OR OLDER'] <- '89'
+
+HAPPY$AGE = as.numeric(HAPPY$AGE)
+str(HAPPY)
+```
+
+4.
+```{r}
+ggplot(HAPPY, aes(x = FINRELA, fill = SEX)) + geom_bar(position = 'dodge')
+ggplot(HAPPY, aes(x = DEGREE, y = AGE, color = SEX)) + geom_boxplot()
+```
+
+In the bar plot looking at the Income level divided into the two genders, there appears to be more females on the below average side of the graph.  If you look at the below average column, there are more females in that financial status compared to the males.  As for the the above average and far above average columns, there are more males in both of the columns.
+
+In the box plot, the Light High School group has a much larger mean value than the rest of the degree types.  The junior college and bachelor degrees appear to have the smalles mean age values.  I would interpret that older people didn't go to college but now younger people are, so the mean age is going down.
+
+5.
+```{r}
+ggplot(HAPPY, aes(x = HAPPY, fill = SEX)) + geom_bar(position = 'fill')
+ggplot(HAPPY, aes(x = DEGREE, fill = HAPPY)) + geom_bar(position = 'fill')
+ggplot(HAPPY, aes(x = HEALTH, fill = HAPPY)) + geom_bar(position = 'fill')
+```
+
+It appears that gender does not significantly tell the level happiness of a person.  The chart shows basically the same proporion of men and women in every column.  It appears that the degree a person has does affect their happiness.  As you go from Light High School to Graduate you can see the red "Not too Happy" section getting smaller. Same thing for the relationship between health and happiness.  As you go from Poor to Excellent on the health scale, you can see the Not too Happy proportion get smaller.
+
+
+
+
+I learned that gender does not determine happiness.  Also that health and level of education really help someone be happy.
+
+
+
+
