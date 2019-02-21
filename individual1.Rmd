@@ -1,0 +1,122 @@
+---
+title: "individual1"
+author: "Grant Ruedy"
+date: "2/19/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+data(happy, package="productplots")
+head(happy)
+
+HAPPY <- readRDS("HAPPY.rds")
+
+```
+
+##Cleaning the Data
+
+1.
+```{r}
+HAPPY[HAPPY=='IAP' | HAPPY=='DK'] <- NA
+
+```
+
+2 & 3.
+```{r}
+str(HAPPY)
+
+happy1 <- as.character(HAPPY$HAPPY)
+HAPPY$HAPPY <-factor(happy1)
+
+sex1 <- as.character(HAPPY$SEX)
+sex2 <- factor(sex1)
+str(sex2)
+levels(sex2)
+HAPPY$SEX <-sex2
+
+marital1 <- as.character(HAPPY$MARITAL)
+marital2 <- factor(marital1, c('NEVER MARRIED', 'MARRIED', 'SEPARATED', 'DIVORCED', 'WIDOWED'))
+str(marital2)
+levels(marital2)
+HAPPY$MARITAL <- marital2
+
+degree1 <- as.character(HAPPY$DEGREE)
+degree2 <- factor(degree1, c('LT HIGH SCHOOL', 'HIGH SCHOOL', 'JUNIOR COLLEGE', 'BACHELOR', 'GRADUATE'))
+str(degree2)
+levels(degree2)
+HAPPY$DEGREE <-degree2
+
+finrela1 <- as.character(HAPPY$FINRELA)
+finrela2 <- factor(finrela1, c('FAR BELOW AVERAGE', 'BELOW AVERAGE', 'AVERAGE', 'ABOVE AVERAGE', 'FAR ABOVE AVERAGE'))
+str(finrela2)
+levels(finrela2)
+HAPPY$FINRELA <-finrela2
+
+health1 <- as.character(HAPPY$HEALTH)
+health2 <- factor(health1, c('POOR', 'FAIR', 'GOOD', 'EXCELLENT'))
+str(health2)
+levels(health2)
+HAPPY$HEALTH <-health2
+
+party1 <- as.character(HAPPY$PARTYID)
+party2 <- factor(party1, c('STRONG DEMOCRAT', 'NOT STR DEMOCRAT', 'IND,NEAR DEM', 'INDEPENDENT', 'IND,NEAR REP', 'NOT STR REPUBLICAN', 'STRONG REPUBLICAN', 'OTHER PARTY'))
+str(party2)
+levels(party2)
+HAPPY$PARTYID <-party2
+
+
+HAPPY[HAPPY =='89 OR OLDER'] <- '89'
+str(HAPPY$AGE)
+
+HAPPY$AGE <- as.numeric(HAPPY$AGE)
+str(HAPPY)
+
+```
+
+##Individual Exploration
+
+1.
+```{r}
+library(ggplot2)
+
+#Investigating Distribution of DEGREE based on SEX
+ggplot(HAPPY, aes(x=SEX, fill=DEGREE)) + geom_bar()
+
+#Investigating Distribution of HEALTH
+ggplot(HAPPY, aes(x=HEALTH, y=AGE, col=SEX, size=AGE )) + geom_boxplot(na.rm=TRUE) 
+```
+
+
+The first graph shows the relationship between sex and level of degree the person obtained. It is a bar graph, and shows that more women had light high school and high school as their highest level of degree. Men and women had about the same amount of other levels of education though.
+
+The second graph shows a boxplot comparing the health and age of the person. Each health level is seperated into men and women. By looking at the graph, poor health people are the oldest. Fair health pople are the second oldest and this trend continues, for the youngest peope around age 38 have excellent health. 
+
+
+2.
+```{r}
+library(ggplot2)
+library(ggmosaic)
+
+ggplot(HAPPY) + geom_mosaic(aes(x=product(HAPPY), fill=MARITAL)) + xlab('Happiness Level')+ ylab('Marital Status') + ggtitle('Marital Status Vs Happiness Level')
+
+ggplot(HAPPY, aes(x=HAPPY )) + geom_histogram(stat='count') +facet_wrap(~SEX) +coord_flip() +ylab('Happiness Level')+ ggtitle('Gender Vs Happiness Level')
+
+ggplot(HAPPY, aes(x=HAPPY, fill=DEGREE)) + geom_bar(position='fill') + ylab('proportion') + xlab('Happiness Level')+ ggtitle('Level of Degree Vs Happiness')
+
+```
+
+
+The first graph shows a mosaic plot comparing happiness to marital status. According to the graph, most people are pretty happy, while a large majority of pretty happy and very happy people are married. People who are not too happy are more evenly distributed in terms of their marital status. 
+
+The second graph compares happiness level by gender using a histogram. According to this graph, there are more women who are very happy, pretty happy, and not too happy coompared to men. The proportion of each gender who area certain level of happiness seems to be consistent between genders.
+
+The final graph shows happiness level compared to level of degree, by using a proportion. According to the graph, people are not too happy have the highest proportion of people who only completed lt high school as their highest level of education. There does seem to be a small trend in happiness depending on graduate degree, as the most happy people have a higher proprtion of peole with graduate degrees than the other people. 
+
+
+  
+  
+From the data set, I learned that there are a lot of different factors that play into someone's happiness. For example, if someone is classified as married, there is a good chance they are very happy. Also, education has a small role in happiness too, as people with the lowest level of education were the highest proportion in the not too happy category, compared to other happiness levels. Another note to make is there seems to be a strong strend between age and health, unfortunately implying that people's health declines as they age, which seems intuitive. Also, neither gender seems to be more happy than the other, which was expected as women and men both have ups and downs in life.
